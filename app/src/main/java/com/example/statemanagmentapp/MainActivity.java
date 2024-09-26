@@ -10,7 +10,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.lifecycle.ViewModelProvider;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonIncrement;
     private EditText textEdit;
     private CheckBox checkBox;
+    private TextView textCheckBox;
     private Switch toggleSwitch;
     private int count = 0;
     private String textEditText = String.valueOf(textEdit);
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         buttonIncrement = findViewById(R.id.buttonIncrement);
         textEdit = findViewById(R.id.textEdit);
         checkBox = findViewById(R.id.checkBox);
+        textCheckBox = findViewById(R.id.textCheckBox);
         toggleSwitch = findViewById(R.id.toggleSwitch);
 
         if(savedInstanceState != null) {
@@ -55,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
                 updateToggleSwitch();
             }
         });
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                updateCheckBox();
+            }
+        });
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -68,12 +75,17 @@ public class MainActivity extends AppCompatActivity {
         textViewCount.setText("Licznik: " + count);
     }
     private void updateToggleSwitch() {
-        if(checked) {
+        if(switched) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            checked = false;
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            checked = true;
+        }
+    }
+    private void updateCheckBox() {
+        if(checked) {
+            textCheckBox.setText("Opcja zaznaczona");
+        } else {
+            textCheckBox.setText("");
         }
     }
 }
