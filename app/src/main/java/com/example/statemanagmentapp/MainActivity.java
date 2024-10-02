@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String keyCount = "", keyEditText = "", keyCheckBox = "", keyToggleSwitch ="";
+    private static final String keyCount = "count", keyEditText = "textEditText", keyCheckBox = "false", keyToggleSwitch ="false";
     private TextView textViewCount;
     private Button buttonIncrement;
     private EditText textEdit;
@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
             textEditText = savedInstanceState.getString(keyEditText);
             checked = savedInstanceState.getBoolean(keyCheckBox);
             switched = savedInstanceState.getBoolean(keyToggleSwitch);
+            updateCountText();
+            updateCheckBox();
+            updateToggleSwitch();
         }
 
         textEditText = String.valueOf(textEdit);
@@ -58,12 +61,22 @@ public class MainActivity extends AppCompatActivity {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(checkBox.isChecked()) {
+                    checked = true;
+                } else {
+                    checked = false;
+                }
                 updateCheckBox();
             }
         });
         toggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(toggleSwitch.isChecked()) {
+                    switched = true;
+                } else {
+                    switched = false;
+                }
                 updateToggleSwitch();
             }
         });
@@ -80,21 +93,17 @@ public class MainActivity extends AppCompatActivity {
         textViewCount.setText("Licznik: " + count);
     }
     private void updateCheckBox() {
-        if(!checked) {
+        if(checked) {
             textCheckBox.setText("Opcja zaznaczona");
-            checked = true;
         } else {
             textCheckBox.setText("");
-            checked = false;
         }
     }
     private void updateToggleSwitch() {
         if(switched) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            switched = false;
-        } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            switched = true;
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 }
