@@ -10,20 +10,17 @@ import android.widget.Switch;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.ViewModelProvider;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String keyCount = "count", keyEditText = "textEditText", keyCheckBox = "false", keyToggleSwitch ="false";
     private TextView textViewCount;
     private Button buttonIncrement;
     private EditText textEdit;
     private CheckBox checkBox;
     private TextView textCheckBox;
     private Switch toggleSwitch;
-    private int count = 0;
-    private String textEditText = "";
-    private Boolean checked = false;
-    private Boolean switched = false;
+    private StateViewModel stateViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,24 +34,17 @@ public class MainActivity extends AppCompatActivity {
         textCheckBox = findViewById(R.id.textCheckBox);
         toggleSwitch = findViewById(R.id.toggleSwitch);
 
-        if(savedInstanceState != null) {
-            count = savedInstanceState.getInt(keyCount);
-            textEditText = savedInstanceState.getString(keyEditText);
-            checked = savedInstanceState.getBoolean(keyCheckBox);
-            switched = savedInstanceState.getBoolean(keyToggleSwitch);
-            updateCountText();
-            updateCheckBox();
-            updateToggleSwitch();
-        }
+        stateViewModel = new ViewModelProvider(this).get(StateViewModel.class);
 
-        textEditText = String.valueOf(textEdit);
-        checked = Boolean.valueOf(String.valueOf(checkBox));
-        switched = Boolean.valueOf(String.valueOf(toggleSwitch));
+        updateCountText();
+        updateEditText();
+        updateCheckBox();
+        updateToggleSwitch();
 
         buttonIncrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                count++;
+                stateViewModel.incrementCount();
                 updateCountText();
             }
         });
@@ -62,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(checkBox.isChecked()) {
-                    checked = true;
+                    stateViewModel.setChecked(true);
                 } else {
-                    checked = false;
+                    stateViewModel.setChecked(false);
                 }
                 updateCheckBox();
             }
@@ -73,34 +63,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(toggleSwitch.isChecked()) {
-                    switched = true;
+                    stateViewModel.setSwitched(true);
                 } else {
-                    switched = false;
+                    stateViewModel.setSwitched(false);
                 }
                 updateToggleSwitch();
             }
         });
     }
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(keyCount, count);
-        outState.putString(keyEditText, textEditText);
-        outState.putBoolean(keyCheckBox, checked);
-        outState.putBoolean(keyToggleSwitch, switched);
-    }
     private void updateCountText() {
-        textViewCount.setText("Licznik: " + count);
+        textViewCount.setText("Licznik: " + stateViewModel.getCount());
+    }
+    private void updateEditText() {
+        textEdit.setText("" + stateViewModel.getTextEditText());
     }
     private void updateCheckBox() {
-        if(checked) {
+        if(stateViewModel.getChecked()) {
             textCheckBox.setText("Opcja zaznaczona");
         } else {
             textCheckBox.setText("");
         }
     }
     private void updateToggleSwitch() {
-        if(switched) {
+        if(stateViewModel.getSwitched()) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
