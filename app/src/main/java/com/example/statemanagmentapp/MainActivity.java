@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             checked = savedInstanceState.getBoolean(keyCheckBox);
             switched = savedInstanceState.getBoolean(keyToggleSwitch);
             updateCountText();
+            updateEditText();
             updateCheckBox();
             updateToggleSwitch();
         }
@@ -56,6 +57,23 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 count++;
                 updateCountText();
+            }
+        });
+        textEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                textEditText = textEdit.getText().toString();
+                updateEditText();
             }
         });
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -91,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
     }
     private void updateCountText() {
         textViewCount.setText("Licznik: " + count);
+    }
+    private void updateEditText() {
+        textEdit.setText(textEditText);
     }
     private void updateCheckBox() {
         if(checked) {
