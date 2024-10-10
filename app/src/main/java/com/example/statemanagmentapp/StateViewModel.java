@@ -17,13 +17,16 @@ public class StateViewModel extends ViewModel {
     public String getTextEditText() {
         return textEditText;
     }
-
     public Boolean getChecked() {
         return checked;
     }
 
     public Boolean getSwitched() {
         return switched;
+    }
+
+    public void setTextEditText(String textEditText) {
+        this.textEditText = textEditText;
     }
 
     public void setChecked(Boolean checked) {
