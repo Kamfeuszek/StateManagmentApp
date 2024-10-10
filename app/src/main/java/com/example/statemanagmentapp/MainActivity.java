@@ -47,11 +47,6 @@ public class MainActivity extends AppCompatActivity {
             updateCheckBox();
             updateToggleSwitch();
         }
-
-        textEditText = String.valueOf(textEdit);
-        checked = Boolean.valueOf(String.valueOf(checkBox));
-        switched = Boolean.valueOf(String.valueOf(toggleSwitch));
-
         buttonIncrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
