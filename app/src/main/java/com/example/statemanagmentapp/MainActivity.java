@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 textEditText = textEdit.getText().toString();
-                updateEditText();
             }
         });
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
