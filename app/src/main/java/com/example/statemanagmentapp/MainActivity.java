@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox checkBox;
     private TextView textCheckBox;
     private Switch toggleSwitch;
+    private TextView workCheck;
     private StateViewModel stateViewModel;
 
     @Override
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         checkBox = findViewById(R.id.checkBox);
         textCheckBox = findViewById(R.id.textCheckBox);
         toggleSwitch = findViewById(R.id.toggleSwitch);
+        workCheck = findViewById(R.id.checkIf);
 
         stateViewModel = new ViewModelProvider(this).get(StateViewModel.class);
 
@@ -42,12 +44,14 @@ public class MainActivity extends AppCompatActivity {
         updateEditText();
         updateCheckBox();
         updateToggleSwitch();
+        checkIfSave();
 
         buttonIncrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 stateViewModel.incrementCount();
                 updateCountText();
+                checkIfSave();
             }
         });
         textEdit.addTextChangedListener(new TextWatcher() {
@@ -63,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                stateViewModel.setTextEditText(textEdit.toString());
+                stateViewModel.setTextEditText(textEdit.getText().toString());
+                checkIfSave();
             }
         });
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -75,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     stateViewModel.setChecked(false);
                 }
                 updateCheckBox();
+                checkIfSave();
             }
         });
         toggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -86,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     stateViewModel.setSwitched(false);
                 }
                 updateToggleSwitch();
+                checkIfSave();
             }
         });
     }
@@ -108,5 +115,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+    }
+    private void checkIfSave() {
+        workCheck.setText(stateViewModel.getTextEditText() + stateViewModel.getChecked() + stateViewModel.getCount() + stateViewModel.getSwitched());
     }
 }
